@@ -26,7 +26,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:mdmmp.showMindMap"
+		"onCommand:mdmmp.showMindMap",
+		"onCommand:mdmmp.exportSVG"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -35,6 +36,15 @@
 				"when": "resourceLangId == markdown",
 				"command": "mdmmp.showMindMap",
 				"title": "View Mind Map",
+				"icon": {
+					"light": "./icon/mind-map-theme-light.svg",
+					"dark": "./icon/mind-map-theme-dark.svg"
+				}
+			},
+			{
+				"when": "resourceLangId == markdown",
+				"command": "mdmmp.exportSVG",
+				"title": "Export Mind Map SVG",
 				"icon": {
 					"light": "./icon/mind-map-theme-light.svg",
 					"dark": "./icon/mind-map-theme-dark.svg"
@@ -71,5 +81,7 @@
 		"typescript": "^4.0.2",
 		"vscode-test": "^1.4.0"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"html2svg": "^1.0.1"
+	}
 }

@@ -6,10 +6,16 @@ import { MindMapPreview } from "./mindMapPreviewWebview";
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	const mindMapPreview = new MindMapPreview(context);
+
 	context.subscriptions.push(
 		vscode.commands.registerCommand('mdmmp.showMindMap', () => {
-			const mindMapPreview = new MindMapPreview(context);
 			mindMapPreview.updatePreview();
+		})
+	);
+	context.subscriptions.push(
+		vscode.commands.registerCommand('mdmmp.exportSVG', () => {
+			mindMapPreview.exportSVG();
 		})
 	);
 }

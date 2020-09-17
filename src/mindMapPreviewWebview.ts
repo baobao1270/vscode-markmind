@@ -1,5 +1,11 @@
 import * as vscode from 'vscode';
 import * as path from "path";
+import * as fs from "fs";
+// const html2svg = require('html2svg');
+// import * as html2svg from "html2svg";
+export interface WebviewMessage {
+    [key: string]: any;
+}
 
 class MindMapPreview {
     view: vscode.WebviewPanel;
@@ -17,6 +23,7 @@ class MindMapPreview {
                 ]
             }
         );
+        console.log("path", path.join(context.extensionPath, 'html'));
 
         this.view.webview.html = `
             <!DOCYPTE html>
@@ -47,12 +54,25 @@ class MindMapPreview {
                     .with({ scheme: 'vscode-resource' })}"></script>
             </head>
             <body>
-                <svg id="container"></svg>
+                <svg id="container" preserveAspectRatio="none meet"></svg>
                 <script>
                     const map = markmap.Markmap.create("#container", null, {"t":"heading","d":1,"p":{},"v":"Rendering, please wait..."});
+                    const vscode = acquireVsCodeApi();
                     window.addEventListener('message', event => {
                         const message = event.data;
-                        map.setData(markmap.transform(message));
+                        switch (message.command) {
+                            case "saveSVG": {
+                                let svg = document.querySelectorAll('svg')[0];
+                                svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                                vscode.postMessage({html: svg.outerHTML});
+                                break;
+                            }
+                            case "markdown": {
+                                    map.setData(markmap.transform(message.data));
+                                    break;
+                                }
+                        }
+                                
                     });
                 </script>
             </body>
@@ -74,11 +94,27 @@ class MindMapPreview {
             null,
             context.subscriptions
         );
+
+    
+        this.view.webview.onDidReceiveMessage((message) => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor == undefined) { return; }
+            const fspath = editor.document.uri.fsPath;
+            const temp_file = path.dirname(fspath);
+            const filename = path.basename(fspath, "md");
+            let temp_image = path.resolve(temp_file, filename +'.svg')
+            fs.writeFileSync(temp_image, message.html);
+        }, undefined, context.subscriptions);
     }
+
 
     updatePreview() {
         const data = this.editingEditor.document.getText();
-        this.view.webview.postMessage(data);
+        this.view.webview.postMessage({"command": "markdown", "data": data});
+    }
+
+    exportSVG() {
+        this.view.webview.postMessage({"command":"saveSVG"})
     }
 }
 
