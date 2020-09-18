@@ -1,22 +1,35 @@
 import * as vscode from 'vscode';
 import * as path from "path";
 import * as fs from "fs";
-
-function getFileNameWithoutExtension(filename: string) {
-    var pattern = /\.[A-Za-z]+$/;
-    let ansMatch = pattern.exec(filename);
-    if (ansMatch !== null) {
-        return (filename.slice(0, ansMatch.index));
-    } else {
-        return filename;
-    }
-}
+import * as utils from "./utils";
 
 class MindMapPreview {
+    context: vscode.ExtensionContext;
     view: vscode.WebviewPanel;
     editingEditor!: vscode.TextEditor;
+    isDisposed: boolean = false;
+    
+    // Configure initialization here.
+    configureWebviewScripts(webviewScripts: string[]) {
+        webviewScripts.push("d3.js");
+        webviewScripts.push("transform.min.js");
+        webviewScripts.push("view.min.js");
+        return webviewScripts;
+    }
+
+    configureDisposables(disposables: vscode.Disposable[]) {
+        disposables.push(vscode.workspace.onDidChangeTextDocument(() => {
+            this.updatePreview();
+        }));
+        disposables.push(this.view.webview.onDidReceiveMessage((message) => {
+            this.onMessageReceived(message);
+        }, null, this.context.subscriptions));
+        return disposables;
+    }
 
     constructor(context: vscode.ExtensionContext) {
+        this.context = context;
+
         this.view = vscode.window.createWebviewPanel(
             "mindMapPreview",
             "Mind Map Preview",
@@ -29,93 +42,76 @@ class MindMapPreview {
             }
         );
 
-        this.view.webview.html = `
-            <!DOCYPTE html>
-            <html>
-            <head>
-                <meta charset="utf-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="renderer" content="webkit">
-                <style>
-                    * {
-                        margin: 0;
-                        padding: 0;
-                    }
-                    #container {
-                        display: block;
-                        width: 100vw;
-                        height: 100vh;
-                    }
-                </style>
-                <script src="${vscode.Uri.file(
-            path.join(context.extensionPath, 'html', 'd3.js'))
-                .with({ scheme: 'vscode-resource' })}"></script>
-                <script src="${vscode.Uri.file(
-                    path.join(context.extensionPath, 'html', 'transform.min.js'))
-                .with({ scheme: 'vscode-resource' })}"></script>
-                <script src="${vscode.Uri.file(
-                    path.join(context.extensionPath, 'html', 'view.min.js'))
-                .with({ scheme: 'vscode-resource' })}"></script>
-            </head>
-            <body>
-                <svg id="container" preserveAspectRatio="none meet"></svg>
-                <script>
-                    const map = markmap.Markmap.create("#container", null, {"t":"heading","d":1,"p":{},"v":"Rendering, please wait..."});
-                    const vscode = acquireVsCodeApi();
-                    window.addEventListener('message', event => {
-                        const message = event.data;
-                        switch (message.command) {
-                            case "saveSvg": {
-                                let svg = document.querySelectorAll('svg')[0];
-                                svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-                                vscode.postMessage({html: svg.outerHTML});
-                                break;
-                            }
-                            case "markdown": {
-                                    map.setData(markmap.transform(message.data));
-                                    break;
-                                }
-                        }
-                                
-                    });
-                </script>
-            </body>
-            </html>
-        `;
-
         const editingEditor = vscode.window.activeTextEditor;
-        if (editingEditor === undefined) { return; }
+        if (editingEditor === undefined) {
+            vscode.window.showWarningMessage("Sorry, the active text editor is not valid.");
+            return;
+        }
         this.editingEditor = editingEditor;
 
-        const editingEvent = vscode.workspace.onDidChangeTextDocument(() => {
-            this.updatePreview();
-        });
-
-        this.view.onDidDispose(
-            () => {
-                editingEvent.dispose();
-            },
-            null,
-            context.subscriptions
-        );
-
-
-        this.view.webview.onDidReceiveMessage((message) => {
-            const editor = vscode.window.activeTextEditor;
-            if (editor == undefined) { return; }
-            const fspath = editor.document.uri.fsPath;
-            const temp_file = path.dirname(fspath);
-            
-            const filename = getFileNameWithoutExtension(path.basename(fspath));
-            let temp_image = path.resolve(temp_file, filename + '.svg')
-            fs.writeFileSync(temp_image, message.html);
-        }, undefined, context.subscriptions);
+        this.initialize();
+        this.isDisposed = false;
     }
 
+    initialize() {
+        this.initializeWebviewHtml();
+        this.registerDisposables();
+    }
+
+    initializeWebviewHtml() {
+        let loadingScriptHtml: string[] = [];
+        this.configureWebviewScripts([]).forEach(path => {
+            loadingScriptHtml.push(`<script src="${vscode.Uri.file(this.getHtmlAssetPath(path)).with({ scheme: 'vscode-resource' })}"></script>`);
+        });
+
+        const html: string = fs.readFileSync(path.join(this.getHtmlAssetPath("mind-map-preview-webview.template.html"))).toString("utf-8");
+        this.view.webview.html = html.replace(/<insert-vscode-resource\/>/g, loadingScriptHtml.join("\r\n"));
+    }
+
+    registerDisposables() {
+        const disposables: vscode.Disposable[] = this.configureDisposables([]);
+        this.view.onDidDispose(
+            () => {
+                disposables.forEach(disposable => {
+                    disposable.dispose();
+                });
+                this.isDisposed = true;
+            },
+            null,
+            this.context.subscriptions
+        );
+    }
+
+    getHtmlAssetPath(filename: string) {
+        return path.join(this.context.extensionPath, 'html', filename);
+    }
+
+    onMessageReceived(message: any) {
+        switch (message.command) {
+            case "saveSvgData": {
+                this.onSvgDataReceived(message.html);
+                break;
+            }
+        }
+    }
+
+    onSvgDataReceived(html: string) {
+        const editor = vscode.window.activeTextEditor;
+        if (editor === undefined) {
+            vscode.window.showWarningMessage("Sorry, the active text editor is not valid.");
+            return;
+        }
+        const fsPath = editor.document.uri.fsPath;
+        const tempFile = path.dirname(fsPath);
+        
+        const filename = utils.getFileNameWithoutExtension(path.basename(fsPath));
+        let tempImage = path.resolve(tempFile, filename + '.svg');
+        fs.writeFileSync(tempImage, html);
+    }
 
     updatePreview() {
         const data = this.editingEditor.document.getText();
-        this.view.webview.postMessage({ "command": "markdown", "data": data });
+        this.view.webview.postMessage({ "command": "renderMarkdown", "data": data });
     }
 
     exportSvg() {
