@@ -14,8 +14,8 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 	context.subscriptions.push(
-		vscode.commands.registerCommand('mdmmp.exportSVG', () => {
-			mindMapPreview.exportSVG();
+		vscode.commands.registerCommand('mdmmp.exportSvg', () => {
+			mindMapPreview.exportSvg();
 		})
 	);
 }

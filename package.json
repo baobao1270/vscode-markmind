@@ -27,7 +27,7 @@
 	],
 	"activationEvents": [
 		"onCommand:mdmmp.showMindMap",
-		"onCommand:mdmmp.exportSVG"
+		"onCommand:mdmmp.exportSvg"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -43,7 +43,7 @@
 			},
 			{
 				"when": "resourceLangId == markdown",
-				"command": "mdmmp.exportSVG",
+				"command": "mdmmp.exportSvg",
 				"title": "Export Mind Map SVG",
 				"icon": {
 					"light": "./icon/mind-map-theme-light.svg",
@@ -80,8 +80,5 @@
 		"mocha": "^8.1.3",
 		"typescript": "^4.0.2",
 		"vscode-test": "^1.4.0"
-	},
-	"dependencies": {
-		"html2svg": "^1.0.1"
 	}
 }

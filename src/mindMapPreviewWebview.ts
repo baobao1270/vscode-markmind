@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from "path";
 import * as fs from "fs";
-// const html2svg = require('html2svg');
-// import * as html2svg from "html2svg";
+
 export interface WebviewMessage {
     [key: string]: any;
 }
@@ -23,7 +22,6 @@ class MindMapPreview {
                 ]
             }
         );
-        console.log("path", path.join(context.extensionPath, 'html'));
 
         this.view.webview.html = `
             <!DOCYPTE html>
@@ -61,7 +59,7 @@ class MindMapPreview {
                     window.addEventListener('message', event => {
                         const message = event.data;
                         switch (message.command) {
-                            case "saveSVG": {
+                            case "saveSvg": {
                                 let svg = document.querySelectorAll('svg')[0];
                                 svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
                                 vscode.postMessage({html: svg.outerHTML});
@@ -113,8 +111,8 @@ class MindMapPreview {
         this.view.webview.postMessage({"command": "markdown", "data": data});
     }
 
-    exportSVG() {
-        this.view.webview.postMessage({"command":"saveSVG"})
+    exportSvg() {
+        this.view.webview.postMessage({"command":"saveSvg"})
     }
 }
 
