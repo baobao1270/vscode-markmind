@@ -9,7 +9,7 @@
 	"publisher": "josephcz",
 	"displayName": "Markdown Mind Map Preview",
 	"description": "A simple markdown mind map maker and previewer developed by a young and naive student.",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"engines": {
 		"vscode": "^1.49.0"
 	},
