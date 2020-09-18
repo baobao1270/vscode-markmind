@@ -2,8 +2,14 @@ import * as vscode from 'vscode';
 import * as path from "path";
 import * as fs from "fs";
 
-export interface WebviewMessage {
-    [key: string]: any;
+function getFileNameWithoutExtension(filename: string) {
+    var pattern = /\.[A-Za-z]+$/;
+    let ansMatch = pattern.exec(filename);
+    if (ansMatch !== null) {
+        return (filename.slice(0, ansMatch.index));
+    } else {
+        return filename;
+    }
 }
 
 class MindMapPreview {
@@ -42,14 +48,14 @@ class MindMapPreview {
                     }
                 </style>
                 <script src="${vscode.Uri.file(
-                    path.join(context.extensionPath, 'html', 'd3.js'))
-                    .with({ scheme: 'vscode-resource' })}"></script>
+            path.join(context.extensionPath, 'html', 'd3.js'))
+                .with({ scheme: 'vscode-resource' })}"></script>
                 <script src="${vscode.Uri.file(
                     path.join(context.extensionPath, 'html', 'transform.min.js'))
-                    .with({ scheme: 'vscode-resource' })}"></script>
+                .with({ scheme: 'vscode-resource' })}"></script>
                 <script src="${vscode.Uri.file(
                     path.join(context.extensionPath, 'html', 'view.min.js'))
-                    .with({ scheme: 'vscode-resource' })}"></script>
+                .with({ scheme: 'vscode-resource' })}"></script>
             </head>
             <body>
                 <svg id="container" preserveAspectRatio="none meet"></svg>
@@ -93,14 +99,15 @@ class MindMapPreview {
             context.subscriptions
         );
 
-    
+
         this.view.webview.onDidReceiveMessage((message) => {
             const editor = vscode.window.activeTextEditor;
             if (editor == undefined) { return; }
             const fspath = editor.document.uri.fsPath;
             const temp_file = path.dirname(fspath);
-            const filename = path.basename(fspath, "md");
-            let temp_image = path.resolve(temp_file, filename +'.svg')
+            
+            const filename = getFileNameWithoutExtension(path.basename(fspath));
+            let temp_image = path.resolve(temp_file, filename + '.svg')
             fs.writeFileSync(temp_image, message.html);
         }, undefined, context.subscriptions);
     }
@@ -108,11 +115,11 @@ class MindMapPreview {
 
     updatePreview() {
         const data = this.editingEditor.document.getText();
-        this.view.webview.postMessage({"command": "markdown", "data": data});
+        this.view.webview.postMessage({ "command": "markdown", "data": data });
     }
 
     exportSvg() {
-        this.view.webview.postMessage({"command":"saveSvg"})
+        this.view.webview.postMessage({ "command": "saveSvg" });
     }
 }
 
