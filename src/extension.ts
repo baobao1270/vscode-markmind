@@ -1,18 +1,25 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { MindMapPreview } from "./mindMapPreviewWebview";
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	let mindMapPreview: MindMapPreview;
 	context.subscriptions.push(
 		vscode.commands.registerCommand('mdmmp.showMindMap', () => {
-			const mindMapPreview = new MindMapPreview(context);
+			if ((mindMapPreview === undefined) || mindMapPreview.isDisposed) {
+				mindMapPreview = new MindMapPreview(context);
+			}
 			mindMapPreview.updatePreview();
+		})
+	);
+	context.subscriptions.push(
+		vscode.commands.registerCommand('mdmmp.exportSvg', () => {
+			if ((mindMapPreview === undefined) || mindMapPreview.isDisposed) {
+				vscode.window.showWarningMessage("Sorry, you need open the preview tab first.");
+				return;
+			}
+			mindMapPreview.exportSvg();
 		})
 	);
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {}
