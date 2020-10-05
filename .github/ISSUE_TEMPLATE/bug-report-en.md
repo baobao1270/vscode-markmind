@@ -22,7 +22,7 @@ A clear and concise description of what the bug is.
  1. ...
  2. ...
 
-**Expected behavior**
+**Expected Behavior**
 A clear and concise description of what you expected to happen. [optional]
 
 **Screenshots**
