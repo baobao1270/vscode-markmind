@@ -44,7 +44,7 @@
 请参见 [提交 Issue 页](https://github.com/baobao1270/vscode-markdown-mindmap-preview/issues/new/choose)。
 
 ### Submitting Codes
-请参见 [CONTRIBUTING_ZH.md](https://github.com/baobao1270/vscode-markdown-mindmap-preview/blob/master/CONTRIBUTING.md)。
+请参见 [CONTRIBUTING_ZH.md](https://github.com/baobao1270/vscode-markdown-mindmap-preview/blob/master/CONTRIBUTING_ZH.md)。
 
 ## 版权
 本项目基于 [MIT License](https://github.com/baobao1270/vscode-markdown-mindmap-preview/blob/master/LICENSE) 授权。
