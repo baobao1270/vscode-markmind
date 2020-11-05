@@ -16,6 +16,7 @@ assignees: ''
  - Your `vscode-markdown-mindmap-preview` Extension Version: []
 
 **Description**
+
 A clear and concise description of what the bug is.
 
 **Reproduce Steps**
@@ -23,10 +24,19 @@ A clear and concise description of what the bug is.
  2. ...
 
 **Expected Behavior**
+
 A clear and concise description of what you expected to happen. [optional]
 
 **Screenshots**
+
 If applicable, add screenshots to help explain your problem. [optional]
 
 **Logs**
-[optional]
+
+Please open the debugging console with `Ctrl+Shift+I` and paste logs below:
+```
+```
+
+Please open the command bar with `Ctrl+Shift+P`, then use the command `>developer: open webview developer tools` and paste logs below:
+```
+```
