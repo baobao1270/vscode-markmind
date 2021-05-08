@@ -1,84 +1,97 @@
 {
-	"name": "vscode-markdown-mindmap-preview",
-	"author": {
-		"name": "Joseph Chris",
-		"email": "joseph@josephcz.xyz",
-		"url": "https://josephcz.xyz/"
-	},
-	"icon": "icon.png",
-	"publisher": "josephcz",
-	"displayName": "Markdown Mind Map Preview",
-	"description": "A simple markdown mind map maker and previewer developed by a young and naive student.",
-	"version": "1.1.0",
-	"engines": {
-		"vscode": "^1.49.0"
-	},
-	"homepage": "https://github.com/baobao1270/vscode-markdown-mindmap-preview",
-	"bugs": {
-		"url": "https://github.com/baobao1270/vscode-markdown-mindmap-preview/issues"
-	},
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/baobao1270/vscode-markdown-mindmap-preview.git"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:mdmmp.showMindMap",
-		"onCommand:mdmmp.exportSvg"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"when": "resourceLangId == markdown",
-				"command": "mdmmp.showMindMap",
-				"title": "View Mind Map",
-				"icon": {
-					"light": "./icon/mind-map-theme-light.svg",
-					"dark": "./icon/mind-map-theme-dark.svg"
-				}
-			},
-			{
-				"when": "resourceLangId == markdown",
-				"command": "mdmmp.exportSvg",
-				"title": "Export Mind Map SVG",
-				"icon": {
-					"light": "./icon/mind-map-theme-light.svg",
-					"dark": "./icon/mind-map-theme-dark.svg"
-				}
-			}
-		],
-		"menus": {
-			"editor/title": [
-				{
-					"when": "resourceLangId == markdown",
-					"command": "mdmmp.showMindMap",
-					"group": "navigation"
-				}
-			]
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"lint": "eslint src --ext ts",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.0.0",
-		"@types/node": "^14.0.27",
-		"@types/vscode": "^1.49.0",
-		"@typescript-eslint/eslint-plugin": "^3.8.0",
-		"@typescript-eslint/parser": "^3.8.0",
-		"eslint": "^7.6.0",
-		"glob": "^7.1.6",
-		"mocha": "^8.1.3",
-		"typescript": "^4.0.2",
-		"vscode-test": "^1.4.0"
-	}
+  "name": "vscode-markdown-mindmap-preview",
+  "author": {
+    "name": "Joseph Chris",
+    "email": "joseph@josephcz.xyz",
+    "url": "https://josephcz.xyz/"
+  },
+  "icon": "icon.png",
+  "publisher": "josephcz",
+  "displayName": "Markdown Mind Map Preview",
+  "description": "A simple markdown mind map maker and previewer developed by a young and naive student.",
+  "version": "1.1.0",
+  "engines": {
+    "vscode": "^1.49.0"
+  },
+  "homepage": "https://github.com/baobao1270/vscode-markdown-mindmap-preview",
+  "bugs": {
+    "url": "https://github.com/baobao1270/vscode-markdown-mindmap-preview/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baobao1270/vscode-markdown-mindmap-preview.git"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:mdmmp.showMindMap",
+    "onCommand:mdmmp.exportSvg",
+    "onCommand:mdmmp.showMindMapFromFile",
+    "onCommand:mdmmp.copyMarkDownTitleFromFile"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "when": "resourceLangId == markdown",
+        "command": "mdmmp.showMindMap",
+        "title": "View Mind Map",
+        "icon": {
+          "light": "./icon/mind-map-theme-light.svg",
+          "dark": "./icon/mind-map-theme-dark.svg"
+        }
+      },
+      {
+        "command": "mdmmp.exportSvg",
+        "title": "Export Mind Map SVG",
+        "icon": {
+          "light": "./icon/mind-map-theme-light.svg",
+          "dark": "./icon/mind-map-theme-dark.svg"
+        }
+      },
+      {
+        "command": "mdmmp.showMindMapFromFile",
+        "title": "Mind Map From File",
+        "icon": {
+          "light": "./icon/mind-map-theme-light.svg",
+          "dark": "./icon/mind-map-theme-dark.svg"
+        }
+      },
+      {
+        "command": "mdmmp.copyMarkDownTitleFromFile",
+        "title": "Copy Title From File"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceLangId == markdown",
+          "command": "mdmmp.showMindMap",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@types/mocha": "^8.0.0",
+    "@types/node": "^14.0.27",
+    "@types/vscode": "^1.49.0",
+    "@typescript-eslint/eslint-plugin": "^3.8.0",
+    "@typescript-eslint/parser": "^3.8.0",
+    "eslint": "^7.6.0",
+    "glob": "^7.1.6",
+    "mocha": "^8.1.3",
+    "typescript": "^4.0.2",
+    "vscode-test": "^1.4.0"
+  }
 }
