@@ -6,9 +6,12 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "html"
     ],
-    "ignorePatterns": ["**/**/*.min.js"],
+    "settings": {
+        "html/report-bad-indent": "error"
+    },
     "rules": {
         "@typescript-eslint/naming-convention": "warn",
         "@typescript-eslint/semi": "warn",
@@ -17,6 +20,7 @@
         "no-throw-literal": "warn",
         "semi": "warn",
         "quotes": "warn",
-        "indent": ["warn", 4, {"SwitchCase": 1}]
+        "indent": ["warn", 4, {"SwitchCase": 1}],
+        "max-len": ["warn", {"code": 80, "tabWidth": 4}]
     }
 }

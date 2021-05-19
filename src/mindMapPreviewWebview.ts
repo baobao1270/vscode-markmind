@@ -11,9 +11,9 @@ class MindMapPreview {
     
     // Configure initialization here.
     configureWebviewScripts(webviewScripts: string[]) {
-        webviewScripts.push("d3.js");
-        webviewScripts.push("transform.min.js");
-        webviewScripts.push("view.min.js");
+        webviewScripts.push("libs/d3.js");
+        webviewScripts.push("libs/transform.min.js");
+        webviewScripts.push("libs/view.min.js");
         return webviewScripts;
     }
 
@@ -44,7 +44,8 @@ class MindMapPreview {
 
         const editingEditor = vscode.window.activeTextEditor;
         if (editingEditor === undefined) {
-            vscode.window.showWarningMessage("Sorry, the active text editor is not valid.");
+            vscode.window.showWarningMessage(
+                "Sorry, the active text editor is not valid.");
             return;
         }
         this.editingEditor = editingEditor;
@@ -61,11 +62,17 @@ class MindMapPreview {
     initializeWebviewHtml() {
         let loadingScriptHtml: string[] = [];
         this.configureWebviewScripts([]).forEach(path => {
-            loadingScriptHtml.push(`<script src="${vscode.Uri.file(this.getHtmlAssetPath(path)).with({ scheme: "vscode-resource" })}"></script>`);
+            var jsUri = vscode.Uri.file(this.getHtmlAssetPath(path)).with({
+                scheme: "vscode-resource"
+            });
+            loadingScriptHtml.push(
+                `<script src="${jsUri}"></script>`);
         });
 
-        const html: string = fs.readFileSync(path.join(this.getHtmlAssetPath("mind-map-preview-webview.template.html"))).toString("utf-8");
-        this.view.webview.html = html.replace(/<insert-vscode-resource\/>/g, loadingScriptHtml.join("\r\n"));
+        const html: string = fs.readFileSync(path.join(this.getHtmlAssetPath(
+            "webview.html"))).toString("utf-8");
+        this.view.webview.html = html.replace(
+            /<insert-vscode-resource\/>/g, loadingScriptHtml.join("\r\n"));
     }
 
     registerDisposables() {
@@ -98,20 +105,24 @@ class MindMapPreview {
     onSvgDataReceived(html: string) {
         const editor = vscode.window.activeTextEditor;
         if (editor === undefined) {
-            vscode.window.showWarningMessage("Sorry, the active text editor is not valid.");
+            vscode.window.showWarningMessage(
+                "Sorry, the active text editor is not valid.");
             return;
         }
         const fsPath = editor.document.uri.fsPath;
         const tempFile = path.dirname(fsPath);
         
-        const filename = utils.getFileNameWithoutExtension(path.basename(fsPath));
+        const filename = utils.getFileNameWithoutExtension(
+            path.basename(fsPath));
         let tempImage = path.resolve(tempFile, filename + ".svg");
         fs.writeFileSync(tempImage, html);
     }
 
     updatePreview() {
         const data = this.editingEditor.document.getText();
-        this.view.webview.postMessage({ "command": "renderMarkdown", "data": data });
+        this.view.webview.postMessage({
+            "command": "renderMarkdown", "data": data
+        });
     }
 
     exportSvg() {

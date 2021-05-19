@@ -21,13 +21,14 @@
 <body>
     <svg id="container" preserveAspectRatio="none meet"></svg>
     <script>
-        const map = markmap.Markmap.create("#container", null, { "t": "heading", "d": 1, "p": {}, "v": "Rendering, please wait..." });
+        const map = markmap.Markmap.create("#container", null,
+            { "t": "heading", "d": 1, "p": {}, "v": "Rendering, please wait..." });
         const vscode = acquireVsCodeApi();
-        window.addEventListener('message', event => {
+        window.addEventListener("message", event => {
             const message = event.data;
             switch (message.command) {
                 case "saveSvg": {
-                    let svg = document.querySelectorAll('svg')[0];
+                    let svg = document.querySelectorAll("svg")[0];
                     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
                     vscode.postMessage({ command: "saveSvgData", html: svg.outerHTML });
                     break;

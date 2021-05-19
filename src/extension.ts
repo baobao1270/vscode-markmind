@@ -14,7 +14,8 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand("mdmmp.exportSvg", () => {
             if ((mindMapPreview === undefined) || mindMapPreview.isDisposed) {
-                vscode.window.showWarningMessage("Sorry, you need open the preview tab first.");
+                vscode.window.showWarningMessage(
+                    "Sorry, you need open the preview tab first.");
                 return;
             }
             mindMapPreview.exportSvg();
