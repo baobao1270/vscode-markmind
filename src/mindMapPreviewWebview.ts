@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
 import * as utils from "./utils";
@@ -37,7 +37,7 @@ class MindMapPreview {
             {
                 enableScripts: true,
                 localResourceRoots: [
-                    vscode.Uri.file(path.join(context.extensionPath, 'html'))
+                    vscode.Uri.file(path.join(context.extensionPath, "html"))
                 ]
             }
         );
@@ -61,7 +61,7 @@ class MindMapPreview {
     initializeWebviewHtml() {
         let loadingScriptHtml: string[] = [];
         this.configureWebviewScripts([]).forEach(path => {
-            loadingScriptHtml.push(`<script src="${vscode.Uri.file(this.getHtmlAssetPath(path)).with({ scheme: 'vscode-resource' })}"></script>`);
+            loadingScriptHtml.push(`<script src="${vscode.Uri.file(this.getHtmlAssetPath(path)).with({ scheme: "vscode-resource" })}"></script>`);
         });
 
         const html: string = fs.readFileSync(path.join(this.getHtmlAssetPath("mind-map-preview-webview.template.html"))).toString("utf-8");
@@ -83,7 +83,7 @@ class MindMapPreview {
     }
 
     getHtmlAssetPath(filename: string) {
-        return path.join(this.context.extensionPath, 'html', filename);
+        return path.join(this.context.extensionPath, "html", filename);
     }
 
     onMessageReceived(message: any) {
@@ -105,7 +105,7 @@ class MindMapPreview {
         const tempFile = path.dirname(fsPath);
         
         const filename = utils.getFileNameWithoutExtension(path.basename(fsPath));
-        let tempImage = path.resolve(tempFile, filename + '.svg');
+        let tempImage = path.resolve(tempFile, filename + ".svg");
         fs.writeFileSync(tempImage, html);
     }
 
