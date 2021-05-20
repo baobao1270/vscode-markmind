@@ -13,14 +13,14 @@
     "engines": {
         "vscode": "^1.49.0"
     },
-    "homepage": "https://github.com/baobao1270/vscode-markdown-mindmap-preview",
+    "homepage": "https://github.com/baobao1270/vscode-markmind",
     "bugs": {
-        "url": "https://github.com/baobao1270/vscode-markdown-mindmap-preview/issues"
+        "url": "https://github.com/baobao1270/vscode-markmind/issues"
     },
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/baobao1270/vscode-markdown-mindmap-preview.git"
+        "url": "https://github.com/baobao1270/vscode-markmind.git"
     },
     "categories": [
         "Other"

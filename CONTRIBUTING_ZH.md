@@ -1,95 +1,68 @@
-# 为本项目共享您的力量
-欢迎您，热心人！我瑾代表本项目的的参与者向您的贡献致以诚挚之写意。
+# 提交代码指南与准则
+## 指南
+ 1. **分支**<br/>
+    请先使用 GitHub Fork 功能 Fork 本仓库。
+ 2. **克隆代码和环境准备**<br/>
+    ```
+    git clone git@github.com:<your-username>/vscode-markmind.git
+    cd vscode-markmind
+    npm i
+    ```
+ 3. **建立新分支，编写代码**<br/>
+    使用 `git checkout -b <branch name>` 建立新分支。分支的命名规则在下方的准则中给出。在新分支上编写你的代码。
+ 4. **测试代码**<br/>
+    在 VSCode 中按下 `F5` 开始调试。确保你的代码如预期运行。
+ 5. **在提交前，确保代码编译通过且格式正确**<br/>
+    使用 `npm run pretest` 检查并编译代码。如果没有错误与警告，则表示代码编译通过且格式正确。
+ 6. **建立 Pull request**<br/>
+    您的代码将被 review，然后合并。
 
-在提交您的共享前，恳请您详细阅读以下指导方针，以维护本项目之稳健、持续与良性发展。
+## 准则
+请确保您在提交代码前，已经阅读、理解并同意以下准则：
 
-以下内容主要关于如何向本项目共享代码。若您欲报告异常（Bug）、建议新功能或有所疑问，请 [提交一个 Issue](https://github.com/baobao1270/vscode-markdown-mindmap-preview/issues/new/choose)。
+### 社区
+ 1. **语言**<br/>
+    首选英语，中文亦可。
+ 2. **交流平台**<br/>
+    建议使用 GitHub Issue。请尽量避免使用 QQ 和微信。
+ 3. **代码 Review**<br/>
+    所有代码都将被 Review，不合格的将会被打回。因此请遵循以下规则：
+     - 您的代码风格和 Git 操作符合后文的准则。
+     - TypeScript 编译器未汇报任何 error。
+     - ESLint 未汇报任何 warning。
+ 4. **重要更改提示机制**<br/>
+    请在进行如下重要更改前使用 Issue 进行讨论以收集社区意见，并征得项目管理者同意：
+     - 对大量文件进行重构。
+     - 增加依赖项。
+     - 增加或修改 ESLint 规则。
+ 5. **发布**<br/>
+    仅项目管理者拥有将此插件发布至 VSCode Marketplace 的权力。符合许可证的分支项目不受此条目限制。
 
-## 快速上手
-请确保您已安装 VSCode 软件，且版本 **高于 1.49.0**。
+### 代码风格
+ 1. **As-is 原则**<br/>
+    如无必要，请勿修改。禁止格式化未违反 ESLint 的旧代码。如果必须格式化，则使用一个独立的 git commit。
+ 2. **语法**<br/>
+    优先使用 ES6 语法。
+ 3. **缩进**
+    首先遵循 ESLint 规则，不受其规制的文件一律使用 4 个空格进行缩进。
+ 4. **命名规则**
+    |Target  |Case  |Example       |
+    |--------|------|--------------|
+    |Filename|Camel |mainWebview.ts|
+    |Class   |Pascal|MainWebview   |
+    |Variable|Camel |contentHtml   |
+    |Function|Camel |openWindow()  |
+    |Command |Camel |mdmmp.showFile|
 
-首先，请点击 GitHub 页面左上方的 **Fork** 按钮，GitHub 将在您的账户名下将自动创建一个与本项目同名的项目。请将其下载（Clone）至您的本地计算机中。
-
-```
-git clone git@github.com:<您的用户名>/vscode-markdown-mindmap-preview.git
-```
-
-随后，请安装必要的依赖，然后使用 VSCode 打开此项目。
-```
-npm install
-code .
-```
-
-现在，您可以开始编写代码了。若您需要调试代码，请按下快捷键 `F5`。
-
-## Git 运行指导方针
-### 分支命名
- - 若您仅需编写文档，请使用 `doc` 分支。随新功能新增的文档，请使用该功能的 `feature` 分支。
- - 若您欲新增功能，请使用 `feature/<功能名（英文）>` 或 `feature/issue#<issue-id>` 分支。
- - 若您欲修复异常，请使用 `bugfix/<异常名（英文）>` 或 `bugfix/issue#<issue-id>` 分支。
-
-对于不同的新增功能或修复异常事项，应分别使用不同的分支，不要使用同一分支。
-
-### 提交消息
-**首行**提交消息应简明扼要，并清晰描述您的更改内容。消息应不超过 140 个英文单词或汉字。若您的提交消息与某个或某些 issue 相关，请在首行末尾添加 `fix #issue-id[,#issue-id]` 或 `add #issue-id[,#issue-id]` 后缀。
-
-余下行的提交消息是可选的。您可以选择包含该提交造成的影响等信息。
-
-请勿在提交消息中包含更改的文件列表，因为 Git 会自动列出。
-
-## 代码风格指导方针
-我们期望优雅的代码风格。我们不拒绝结构复杂的代码，但是所有代码应容易阅读与理解。
-
-### 添加依赖
-我们不反对您向我们的项目中引入依赖 —— 广泛地使用依赖是 Node.js 社区的运作方式。在引入依赖前，请您仔细衡量安全与性能，并最好征得项目负责人的同意。
-
-若您决定添加依赖，请记得将其加入 `package.json`。若您决定移除您添加的依赖，或该依赖在您的提交的代码中并未被使用，请记得在 `package.json` 中移除它。
-
-### 变量
-变量作用于尽可能小的作用域，并尽可能避免全局变量。使用 `let` 而非 `var` 来限制变量的作用范围。
-
-### 命名
-请遵守以下命名规则：
- - 类：帕斯卡（大驼峰）命名法，如 `MyClass`.
- - 变量：小驼峰命名法，如 `myVariable`
-   - 请避免 `var` (variable), `ms` (microsoft), `mm` (Mind Map) 之类的缩写，除非该缩写被广泛接受，如 `http`。
-   - 若无歧义，请尽可能使用简短的命名。如 `function getCompany(name) { return companies[name] }` 而非 `function getCompany(companyName) { return companies[name] }`。
-   - **对于变量**，请使用形容词而非 `is-` 前缀命名布尔类型的变量，如 `object.readable` 而非 `object.isReadable`。
- - 函数：小驼峰命名法，如 `getContent`
-   - 函数名应遵循 `<动词>-<名词>-<形容词>` 的结构。`getSomething()` 和 `setSomething()` 是常见的命名方式。
-   - **对于函数**，请使用 `is-` 前缀而非形容词命名布尔类型的返回值，如 `isReadable()` 而非 `readable()`。
- - 命令: 小驼峰命名法，并统一使用 `mdmmp` 前缀，如 `mdmmp.exportSvg` 和 `mdmmp.showMarkdownFile`。
-
-### 注释
-若非必要，勿增注释。请在提交代码前移除仅用于调试的注释。
-
-### 控制台输出
-我们不鼓励主动向控制台输出内容。请在提交代码前移除仅用于调试 `console.log` 函数调用。
-
-### 语法检查
-请确保您的代码通过了 ESLint 与 TSLint 的语法检查。
-
-## 目录结构
- - `html`：扩展运行时的 HTML 代码
- - `icon`：显示在 UI 上的图标
- - `src`：插件本体代码
-   - `extension.ts`：主入口文件
-   - `utils.ts`：所有实用函数的文件
-   - `<className>.ts`: 类文件，以小驼峰命名法的类名命名。
-
-## Pull Request 指导方针
- - 在 Pull Request 之前，请确保您的代码已通过语法检查、自动测试和手动测试。
- - 对于不同的新增功能或修复异常事项，应分别建立各自的 Pull Request。
- - 对于新增功能：
-   - 请添加可用的测试。
-   - 若该新增功能与某个或某些功能建议 Issue 相关，请在 PR 的标题最后加入 `add #xxxx[,#xxxx]` 的后缀。
-   - 请简述添加该功能的理由。请尽可能在添加该功能前添加一个功能建议的 Issue，并取得项目负责人的答复。
-   - 请在 README 或文档中加入以中文和（或）英文书写的功能使用方法。
- - 对于异常修复：
-   - 若该异常修复与某个或某些异常报告 Issue 相关，请在 PR 的标题最后加入 `fix #xxxx[,#xxxx]` 的后缀。
-   - 如果可用，请添加合适的覆盖测试。
- - 请将您请求合并的目标分支名称设置为 `master`。
- - 若您的代码多次提交仍未符合项目负责人的预期，项目负责人将在认为必要时直接修改您提交的代码，这将导致您共享的代码出现于该负责人名下。请见谅：此为项目负责人之性格使然，您的贡献依然有效，并将被记录在案。
-
-## 鸣谢
-感谢您对本项目的鼎力相助。您的贡献将被记录在案并公开展示。
+### 版本控制
+ 1. **分支**<br/>
+     - **Bug 修复分支：** 以 `bugfix/issue#<issue-id>` 或 `bugfix/<bug-name>` 命名。
+     - **新功能分支：** 以 `feature/<feature-name>` 命名。
+     - **其他分支：** 直接使用 `develop`。
+ 2. **Commit 信息**<br/>
+     - 禁止使用非 ACII 字符
+     - 首字母不必大写，结尾不必有句号
+     - 如果该分支修复了一个 bug，请在信息中包含 `fix #id`。若未完全修复，则请勿包含。
+     - 如果该分支完成了一个新功能，且该功能关联了一个或数个 Issue，请在信息中包含 `add #id`
+ 3. **Changelog 和版本号**
+    记得写 Changelog 并修改版本号！
