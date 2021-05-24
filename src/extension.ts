@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { MindMapPreview } from "./mindMapPreviewWebview";
-import { writeToClipBoard } from './writeToClipBoard';
+import { writeToClipBoard } from "./writeToClipBoard";
 
 export function activate(context: vscode.ExtensionContext) {
     let mindMapPreview: MindMapPreview;
@@ -23,15 +23,15 @@ export function activate(context: vscode.ExtensionContext) {
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('mdmmp.showMindMapFromFile', () => {
+        vscode.commands.registerCommand("mdmmp.showMindMapFromFile", () => {
             if (mindMapPreview === undefined || mindMapPreview.isDisposed) {
                 mindMapPreview = new MindMapPreview(context);
             }
-            mindMapPreview.updatePreview({ from_file: true });
+            mindMapPreview.updatePreview({ fromFile: true });
         })
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand('mdmmp.copyMarkDownTitleFromFile', writeToClipBoard)
+        vscode.commands.registerCommand("mdmmp.copyTitle", writeToClipBoard)
     );
 }
 

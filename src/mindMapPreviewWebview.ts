@@ -8,7 +8,7 @@ class MindMapPreview {
     view: vscode.WebviewPanel;
     editingEditor!: vscode.TextEditor;
     isDisposed: boolean = false;
-    isFromFile: any = { from_file: false };
+    isFromFile: any = { fromFile: false };
 
     // Configure initialization here.
     configureWebviewScripts(webviewScripts: string[]) {
@@ -125,15 +125,15 @@ class MindMapPreview {
         fs.writeFileSync(tempImage, html);
     }
 
-    updatePreview(conf = { from_file: false }) {
-        let { from_file: fromFile } = conf;
+    updatePreview(conf = { fromFile: false }) {
+        let { fromFile: fromFile } = conf;
         this.isFromFile = conf;
 
         let data = this.editingEditor.document.getText();
         if (fromFile) {
             data = utils.getMarkDownTitle(data);
         }
-        this.view.webview.postMessage({ command: 'renderMarkdown', data: data });
+        this.view.webview.postMessage({ command: "renderMarkdown", data: data });
     }
 
     exportSvg() {

@@ -29,7 +29,7 @@
         "onCommand:mdmmp.showMindMap",
         "onCommand:mdmmp.exportSvg",
         "onCommand:mdmmp.showMindMapFromFile",
-        "onCommand:mdmmp.copyMarkDownTitleFromFile"
+        "onCommand:mdmmp.copyTitle"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -61,7 +61,7 @@
                 }
             },
             {
-                "command": "mdmmp.copyMarkDownTitleFromFile",
+                "command": "mdmmp.copyTitle",
                 "title": "Copy Title From File"
             }
         ],
