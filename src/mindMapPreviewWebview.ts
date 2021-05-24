@@ -8,7 +8,8 @@ class MindMapPreview {
     view: vscode.WebviewPanel;
     editingEditor!: vscode.TextEditor;
     isDisposed: boolean = false;
-    
+    isFromFile: any = { from_file: false };
+
     // Configure initialization here.
     configureWebviewScripts(webviewScripts: string[]) {
         webviewScripts.push("libs/d3.js");
@@ -18,9 +19,15 @@ class MindMapPreview {
     }
 
     configureDisposables(disposables: vscode.Disposable[]) {
-        disposables.push(vscode.workspace.onDidChangeTextDocument(() => {
-            this.updatePreview();
-        }));
+        let debounceFunc = utils.debounce(
+            this,
+            () => {
+                this.updatePreview.call(this, this.isFromFile);
+            },
+            2000
+        );
+
+        disposables.push(vscode.workspace.onDidChangeTextDocument(debounceFunc));
         disposables.push(this.view.webview.onDidReceiveMessage((message) => {
             this.onMessageReceived(message);
         }, null, this.context.subscriptions));
@@ -118,11 +125,15 @@ class MindMapPreview {
         fs.writeFileSync(tempImage, html);
     }
 
-    updatePreview() {
-        const data = this.editingEditor.document.getText();
-        this.view.webview.postMessage({
-            "command": "renderMarkdown", "data": data
-        });
+    updatePreview(conf = { from_file: false }) {
+        let { from_file: fromFile } = conf;
+        this.isFromFile = conf;
+
+        let data = this.editingEditor.document.getText();
+        if (fromFile) {
+            data = utils.getMarkDownTitle(data);
+        }
+        this.view.webview.postMessage({ command: 'renderMarkdown', data: data });
     }
 
     exportSvg() {

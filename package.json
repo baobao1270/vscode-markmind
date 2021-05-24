@@ -27,7 +27,9 @@
     ],
     "activationEvents": [
         "onCommand:mdmmp.showMindMap",
-        "onCommand:mdmmp.exportSvg"
+        "onCommand:mdmmp.exportSvg",
+        "onCommand:mdmmp.showMindMapFromFile",
+        "onCommand:mdmmp.copyMarkDownTitleFromFile"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -49,6 +51,18 @@
                     "light": "./icon/mind-map-theme-light.svg",
                     "dark": "./icon/mind-map-theme-dark.svg"
                 }
+            },
+            {
+                "command": "mdmmp.showMindMapFromFile",
+                "title": "Mind Map From File",
+                "icon": {
+                    "light": "./icon/mind-map-theme-light.svg",
+                    "dark": "./icon/mind-map-theme-dark.svg"
+                }
+            },
+            {
+                "command": "mdmmp.copyMarkDownTitleFromFile",
+                "title": "Copy Title From File"
             }
         ],
         "menus": {
