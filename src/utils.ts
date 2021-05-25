@@ -28,4 +28,3 @@ function getMarkDownTitle(data: string = "") {
 }
   
 export { getFileNameWithoutExtension, debounce, getMarkDownTitle };
-  
