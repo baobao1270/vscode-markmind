@@ -8,7 +8,7 @@ class MindMapPreview {
     view: vscode.WebviewPanel;
     editingEditor!: vscode.TextEditor;
     isDisposed: boolean = false;
-    isFromFile: any = { fromFile: false };
+    fromFile: boolean = false;
 
     // Configure initialization here.
     configureWebviewScripts(webviewScripts: string[]) {
@@ -19,15 +19,12 @@ class MindMapPreview {
     }
 
     configureDisposables(disposables: vscode.Disposable[]) {
-        let debounceFunc = utils.debounce(
-            this,
-            () => {
-                this.updatePreview.call(this, this.isFromFile);
-            },
-            2000
-        );
-
-        disposables.push(vscode.workspace.onDidChangeTextDocument(debounceFunc));
+        disposables.push(vscode.workspace.onDidChangeTextDocument(
+            utils.debounce(
+                this, 
+                () => { this.updatePreview.call(this, this.fromFile); },
+                2000 // Debounce 2000ms before rerending.
+            )));
         disposables.push(this.view.webview.onDidReceiveMessage((message) => {
             this.onMessageReceived(message);
         }, null, this.context.subscriptions));
@@ -125,14 +122,11 @@ class MindMapPreview {
         fs.writeFileSync(tempImage, html);
     }
 
-    updatePreview(conf = { fromFile: false }) {
-        let { fromFile: fromFile } = conf;
-        this.isFromFile = conf;
-
+    updatePreview(fromFile = false) {
+        this.fromFile = fromFile;
+        
         let data = this.editingEditor.document.getText();
-        if (fromFile) {
-            data = utils.getMarkDownTitle(data);
-        }
+        if(this.fromFile) {data = utils.getMarkDownTitle(data);}
         this.view.webview.postMessage({ command: "renderMarkdown", data: data });
     }
 

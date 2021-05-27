@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
             if (mindMapPreview === undefined || mindMapPreview.isDisposed) {
                 mindMapPreview = new MindMapPreview(context);
             }
-            mindMapPreview.updatePreview({ fromFile: true });
+            mindMapPreview.updatePreview(true);
         })
     );
     context.subscriptions.push(
