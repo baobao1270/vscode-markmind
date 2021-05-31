@@ -39,6 +39,11 @@ When previewing, open the command panel by shortcut keys `Ctrl+Shift+P` and type
 
 **If you run the command again, the previous svg file will be overwritten.**
 
+### Title-only Mode
+When a file is opened, the `Mind Map From File` command can find all markdown title of the document and generate a markdown preveiw.
+
+You can also use the `Copy Title From File` command to copy all markdown titles to clipboard.
+
 ## Reporting Bugs and Suggestions
 We use [GitHub Issue Page](https://github.com/baobao1270/vscode-markmind/issues/new/choose) as bug tracer and communition tool.
 
