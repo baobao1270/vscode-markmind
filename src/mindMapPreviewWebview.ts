@@ -127,7 +127,9 @@ class MindMapPreview {
         
         let data = this.editingEditor.document.getText();
         if(this.fromFile) {data = utils.getMarkDownTitle(data);}
-        this.view.webview.postMessage({ command: "renderMarkdown", data: data });
+        this.view.webview.postMessage({
+            command: "renderMarkdown", data: data
+        });
     }
 
     exportSvg() {

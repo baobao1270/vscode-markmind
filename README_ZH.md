@@ -39,6 +39,11 @@
 
 **若您多次导出同名文件，仅保留最后一次导出的结果，先前的文件将被覆盖。**
 
+### 提取任意文件的 Markdown 标题
+在打开一个文件的状态下，使用 `Mind Map From File` 命令，可以提取该文件中所有的 Markdown 标题，并生成思维导图。
+
+同时，也可以使用 `Copy Title From File` 命令，将所有 Markdown 标题复制到剪贴板。
+
 ## 反馈 bug 或提供意见与建议
 本项目使用 [Issue](https://github.com/baobao1270/vscode-markmind/issues/new/choose) 来追踪 bug 和进行与项目有关的讨论。讨论的首选语言为英语，中文也可接受。
 

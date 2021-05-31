@@ -1,5 +1,9 @@
 # Change Log
 
+## [v1.3.0]
+ - Added Markdown title-only mode
+ - Added Markdown title to clipboard
+
 ## [v1.1.0]
 
  - Added SVG export support
